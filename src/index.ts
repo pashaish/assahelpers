@@ -9,6 +9,7 @@ import { DOM } from "./dom/dom";
   );
   const validatorUsername = new Validator(inputs, usernameValidator);
 
+
   inputs.addEventListener("input", event => {
     validatorUsername.validate();
   });

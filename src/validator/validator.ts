@@ -5,14 +5,23 @@ import { DOM } from "../dom/dom";
 
 const classes = jss
   .createStyleSheet({
-    errorDiv: {
+    warningText: {
       width: "fit-content",
       height: "fit-content",
-      color: "brown"
     },
-    errorWrapper: {
-      outline: "1px solid brown",
-      "border-color": "#00000000"
+    border: {
+      "box-shadow": "inset 0 0 2px 0px brown",
+    },
+    hide: {
+      display: "none",
+    },
+    warningWrapper: {
+      position: "absolute",
+      padding: "2px",
+      "border": "1px solid brown",
+      "background-color": "whitesmoke",
+      color: "brown",
+      "font-family": "monospace",
     }
   })
   .attach().classes;
@@ -35,6 +44,18 @@ export class Validator {
         node,
         (() => {
           const div = document.createElement("div");
+          const nodePos = (() => {
+            node.style.position = "relative";
+            const pos = {
+              x: node.offsetLeft + node.offsetWidth,
+              y: node.offsetTop,
+            }
+            node.style.position = "initial";
+            return pos;
+          })()
+          div.style.top = `${nodePos.y}px`;
+          div.style.left = `${nodePos.x}px`;
+          div.classList.add(classes.warningWrapper)
           return div;
         })()
       );
@@ -45,6 +66,7 @@ export class Validator {
         return;
       });
     }
+    this.setListeners();
   }
 
   @Bind()
@@ -56,7 +78,7 @@ export class Validator {
         this.errorFunc.get(node)!(this.errors, this.showError);
       } else {
         this.validFunc.get(node)!();
-        node.classList.remove(classes.errorWrapper);
+        node.classList.remove(classes.border);
         this.errorsDiv.get(node)!.remove();
       }
     }
@@ -102,13 +124,13 @@ export class Validator {
         return;
       }
 
-      node.classList.add(classes.errorWrapper);
+      node.classList.add(classes.border);
       if (_errors.length === 0) {
-        node.classList.remove(classes.errorWrapper);
+        node.classList.remove(classes.border);
       }
       for (const err of _errors) {
         const div = document.createElement("div");
-        div.classList.add(classes.errorDiv);
+        div.classList.add(classes.warningText);
         div.textContent = err;
         errorDivs.push(div);
       }
@@ -121,6 +143,18 @@ export class Validator {
         throw new Error("Parent not found");
       }
       parent.insertBefore(this.errorsDiv.get(node)!, node.nextElementSibling);
+    }
+  }
+
+  @Bind()
+  private setListeners() {
+    for (const node of this.el.getNodes()) {
+      node.addEventListener("focus", (ev) => {
+          this.errorsDiv.get(node)!.classList.remove(classes.hide);
+      });
+      node.addEventListener("blur", (ev) => {
+        this.errorsDiv.get(node)!.classList.add(classes.hide);
+      });
     }
   }
 }

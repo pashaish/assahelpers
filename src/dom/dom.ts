@@ -63,7 +63,6 @@ export class DOM<T extends HTMLElement> {
 
   public addEventListener<T extends keyof HTMLElementEventMap>(type: T, callback: (event: HTMLElementEventMap[T]) => void) {
     for (const ent of this.entry) {
-      console.debug(ent);
       ent.addEventListener(type, callback)
     }
     return this;
