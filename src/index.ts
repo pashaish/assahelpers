@@ -1,5 +1,5 @@
 import { Validator } from "./validator/validator";
-import { usernameValidator, emailValidator } from "./validator/validators";
+import { usernameValidator } from "./validator/validators";
 import { DOM } from "./dom/dom";
 
 (() => {
