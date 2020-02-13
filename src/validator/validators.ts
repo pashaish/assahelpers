@@ -47,15 +47,19 @@ export const usernameValidator: t_validationCallBack = (val, push) => {
   }
   if (val.length < 5) {
     push(locale.get("The value must contain more than 5 characters"));
+    return;
   }
   if (!!val.toLowerCase().match(/[а-я]/)) {
     push(locale.get("The value must contain the Latin alphabet"));
+    return;
   }
   if (!!val.match(/\s/)) {
     push(locale.get("The value must not contain spaces"));
+    return;
   }
   if (!val.match(/^[a-z0-9_-]{3,16}$/)) {
     push(locale.get("Not valid data"));
+    return;
   }
 };
 
