@@ -4,7 +4,7 @@ export class DOM<T extends HTMLElement> {
   private entry: T[];
   constructor(
     entry?: Document | T | T[] | NodeListOf<T> | undefined | null,
-    private instance: any = HTMLElement
+    private instance: typeof HTMLElement = HTMLElement
   ) {
     if (entry instanceof NodeList) {
       const ents: T[] = [];

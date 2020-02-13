@@ -8,6 +8,7 @@ const classes = jss
     warningText: {
       width: "fit-content",
       height: "fit-content",
+      margin: "1px",
     },
     border: {
       "box-shadow": "inset 0 0 2px 0px brown",
@@ -17,7 +18,7 @@ const classes = jss
     },
     warningWrapper: {
       position: "absolute",
-      padding: "2px",
+      padding: "1px",
       "border": "1px solid brown",
       "background-color": "whitesmoke",
       color: "brown",
@@ -127,6 +128,11 @@ export class Validator {
       node.classList.add(classes.border);
       if (_errors.length === 0) {
         node.classList.remove(classes.border);
+      }
+      if (_errors.length === 1 && _errors[0] === "") {
+        node.classList.remove(classes.border);
+        this.errorsDiv.get(node)!.remove();
+        continue;
       }
       for (const err of _errors) {
         const div = document.createElement("div");
