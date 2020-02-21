@@ -23,6 +23,8 @@ const classes = jss
       "background-color": "whitesmoke",
       color: "brown",
       "font-family": "monospace",
+      width: "fit-content",
+      "text-align": "left",
     }
   })
   .attach().classes;
@@ -72,10 +74,12 @@ export class Validator {
 
   @Bind()
   public validate(): Validator {
+    let errors = 0;
     for (const node of this.el.getNodes()) {
       this.errors.set(node, []);
       this.validationCallBack(node.value, this.pushError(node));
       if (this.errors.get(node)!.length > 0) {
+        errors++;
         this.errorFunc.get(node)!(this.errors, this.showError);
       } else {
         this.validFunc.get(node)!();
@@ -83,8 +87,15 @@ export class Validator {
         this.errorsDiv.get(node)!.remove();
       }
     }
+    if (errors > 0) {
+      this.onError();
+    } else {
+      this.onValid();
+    }
     return this;
   }
+  public onError = () => {return};
+  public onValid = () => {return};
   @Bind()
   public error(
     func: (errors: Map<HTMLInputElement, string[]>, showError: (errors: Map<HTMLInputElement, string[]>) => void) => void
@@ -137,7 +148,7 @@ export class Validator {
       for (const err of _errors) {
         const div = document.createElement("div");
         div.classList.add(classes.warningText);
-        div.textContent = err;
+        div.textContent = `- ${err}`;
         errorDivs.push(div);
       }
       errorDivs.forEach(div => {

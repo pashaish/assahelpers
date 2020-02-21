@@ -9,6 +9,12 @@ import { DOM } from "./dom/dom";
   );
   const validatorUsername = new Validator(inputs, usernameValidator);
 
+  validatorUsername.onValid = () => {
+    console.debug(1);
+  };
+  validatorUsername.onError = () => {
+    console.debug(0);
+  };
 
   inputs.addEventListener("input", validatorUsername.validate);
 
