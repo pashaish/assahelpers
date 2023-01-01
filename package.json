@@ -15,10 +15,10 @@
   },
   "devDependencies": {
     "ts-lint": "^4.5.1",
-    "ts-loader": "^6.2.1",
+    "ts-loader": "^9.4.2",
     "typescript": "^3.7.5",
-    "webpack": "^4.29.0",
-    "webpack-cli": "^3.2.1",
+    "webpack": "^5.75.0",
+    "webpack-cli": "^5.0.1",
     "webpack-dev-server": "^3.1.14"
   }
 }
